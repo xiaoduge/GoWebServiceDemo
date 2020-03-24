@@ -1,25 +1,29 @@
 /*
  * @Author: your name
  * @Date: 2020-03-23 09:42:18
- * @LastEditTime: 2020-03-23 16:36:14
- * @Description: In User Settings Edit
+ * @LastEditTime: 2020-03-24 13:05:25
+ * @Description:
  */
 package main
 
-import "fmt"
-
-type Post struct {
-	Id      int
-	Content string
-	Author  string
-}
+import (
+	"fmt"
+	"net/http"
+)
 
 func main() {
 	fmt.Println("start...")
-	post, err := Retrieve(14)
-	if err != nil {
-		fmt.Println("Retrieve err: ", err)
-		panic(err)
+
+	server := http.Server{
+		Addr: "127.0.0.1:8080",
 	}
-	fmt.Println(post)
+
+	http.HandleFunc("/post/", handleRequest)
+
+	err := server.ListenAndServe()
+	if err != nil {
+		fmt.Println("Http server ListenAndServe error: ", err)
+	}
+
+	fmt.Println("End...")
 }
